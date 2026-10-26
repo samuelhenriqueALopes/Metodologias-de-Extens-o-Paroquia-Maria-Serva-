@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Azul mariano (fundo da imagem de Nossa Senhora) */
+  --color-mariano-50: #f1f7fc;
+  --color-mariano-100: #e1eef8;
+  --color-mariano-200: #c3def1;
+  --color-mariano-300: #9ccae7;
+  --color-mariano-400: #74b0d8;
+  --color-mariano-500: #5397c6;
+  --color-mariano-600: #3f7cab;
+  --color-mariano-700: #34648b;
+  --color-mariano-800: #2d5373;
+  --color-mariano-900: #1e3a55;
+  --color-mariano-950: #12253a;
+
+  /* Dourado litúrgico */
+  --color-ouro-300: #e6cf9a;
+  --color-ouro-400: #d8b86f;
+  --color-ouro-500: #c49a4a;
+  --color-ouro-600: #a67d34;
+
+  /* Roxo do altar (tempo litúrgico) */
+  --color-roxo-600: #6b2fa0;
+  --color-roxo-700: #56247f;
+  --color-roxo-900: #2e1347;
+
+  --color-creme: #fbf9f5;
+  --color-tinta: #1d2733;
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-cormorant);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-creme);
+  color: var(--color-tinta);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-ouro-400);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Ornamento: linha com estrela central (inspirado na coroa de estrelas) */
+.ornamento {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-ouro-500);
+}
+.ornamento::before,
+.ornamento::after {
+  content: "";
+  height: 1px;
+  width: 3rem;
+  background: currentColor;
+  opacity: 0.6;
 }
