@@ -1,5 +1,5 @@
 -- =====================================================================
--- Paróquia Maria Serva do Senhor — schema inicial
+-- Paróquia Maria Serva do Senhor - schema inicial
 -- Princípios de segurança:
 --   * RLS habilitado em TODAS as tabelas (negar por padrão).
 --   * Visitantes anônimos só LEEM conteúdo publicado.

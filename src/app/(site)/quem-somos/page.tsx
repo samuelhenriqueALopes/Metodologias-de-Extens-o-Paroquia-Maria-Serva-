@@ -1,21 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { IconeCoracao, IconeCruz, IconeEstrela, IconeLocal } from "@/components/Icones";
+import { IconeCoracao, IconeCruz, IconeDot, IconeEstrela, IconeLocal } from "@/components/Icones";
 import { LinkExterno } from "@/components/LinkExterno";
+import { urlSegura } from "@/lib/format";
 import { CabecalhoPagina, TituloSecao, botao } from "@/components/Ui";
-import { site } from "@/config/site";
+import { getLinhaDoTempo, getSite } from "@/lib/data";
 
-export const metadata: Metadata = {
-  title: "Quem Somos",
-  description: "A história e a missão da Paróquia Maria Serva do Senhor.",
-};
-
-// TODO: substituir pelos fatos reais da história da paróquia (datas, fundadores, párocos).
-const linhaDoTempo = [
-  { ano: "Origens", texto: "A comunidade nasce da fé de famílias do bairro que se reuniam para rezar o terço e celebrar a missa." },
-  { ano: "Criação", texto: "A comunidade é elevada a paróquia pela Arquidiocese, sob o título de Maria, Serva do Senhor." },
-  { ano: "Hoje", texto: "Uma família de fé com pastorais, movimentos e serviços que anunciam o Evangelho e cuidam de quem mais precisa." },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return { title: "Quem Somos", description: `A história e a missão da ${site.nome}.` };
+}
 
 const valores = [
   { Icone: IconeCruz, titulo: "Eucaristia", texto: "A missa é o centro da nossa vida comunitária." },
@@ -23,7 +17,8 @@ const valores = [
   { Icone: IconeCoracao, titulo: "Caridade", texto: "Servir os irmãos, especialmente os mais pobres." },
 ];
 
-export default function QuemSomosPage() {
+export default async function QuemSomosPage() {
+  const [site, linhaDoTempo] = await Promise.all([getSite(), getLinhaDoTempo()]);
   return (
     <>
       <CabecalhoPagina sobretitulo="Nossa história" titulo="Quem Somos" subtitulo="Uma comunidade que, como Maria, quer dizer “sim” a Deus todos os dias." />
@@ -44,7 +39,7 @@ export default function QuemSomosPage() {
             </p>
           </div>
         </div>
-        <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-xl ring-1 ring-mariano-100">
+        <div className="relative aspect-4/5 overflow-hidden rounded-3xl shadow-xl ring-1 ring-mariano-100">
           <Image src="/images/altar.webp" alt="Altar da igreja com o crucifixo e tecidos roxos do tempo da Quaresma" fill
             sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
         </div>
@@ -56,7 +51,7 @@ export default function QuemSomosPage() {
           <ol className="relative mt-10 space-y-8 border-l-2 border-ouro-300 pl-8">
             {linhaDoTempo.map((item) => (
               <li key={item.ano} className="relative">
-                <span className="absolute -left-[2.6rem] top-1 grid size-5 place-items-center rounded-full bg-ouro-400 ring-4 ring-mariano-50" />
+                <span className="absolute left-[-2.6rem] top-1 grid size-5 place-items-center rounded-full bg-ouro-400 ring-4 ring-mariano-50" />
                 <p className="text-xs font-semibold uppercase tracking-widest text-mariano-600">{item.ano}</p>
                 <p className="mt-1 text-tinta/80">{item.texto}</p>
               </li>
@@ -87,11 +82,13 @@ export default function QuemSomosPage() {
             <div>
               <p className="font-serif text-2xl font-bold">Venha nos visitar</p>
               <p className="mt-1 text-mariano-100">
-                {site.endereco.logradouro}, {site.endereco.bairro} · {site.endereco.cidade}
+                {site.endereco.logradouro}, {site.endereco.bairro} <IconeDot className="inline-flex" /> {site.endereco.cidade}
               </p>
             </div>
           </div>
-          <LinkExterno href={site.mapsUrl} className={botao.ouro}>Como chegar</LinkExterno>
+          {urlSegura(site.mapsUrl) && (
+            <LinkExterno href={site.mapsUrl} className={botao.ouro}>Como chegar</LinkExterno>
+          )}
         </div>
       </section>
     </>

@@ -4,34 +4,38 @@ import { BotaoExcluir } from "@/components/admin/Comuns";
 import { estilo } from "@/components/admin/estilo";
 import { MensagemOk, Tela, TituloPainel, Vazio } from "@/components/admin/Layout";
 import { ROTULOS_STATUS, SeletorStatus } from "@/components/admin/SeletorStatus";
-import { IconeWhatsapp } from "@/components/Icones";
-import { pastorais, SETORES_FORMULARIO } from "@/content/pastorais";
+import { IconeDot, IconeWhatsapp } from "@/components/Icones";
 import { exigirAdmin } from "@/lib/auth";
+import { getSite } from "@/lib/data";
 import { formatarData, linkWhatsapp } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Inscrições" };
-
-const NOMES_SETOR: Record<string, string> = {
-  ...Object.fromEntries(pastorais.map((p) => [p.slug, p.nome])),
-  dizimo: "Dízimo",
-};
 
 type Linha = {
   id: string; setor: string; nome: string; telefone: string; email: string | null;
   mensagem: string | null; status: keyof typeof ROTULOS_STATUS; created_at: string;
 };
 
-function whatsDoInscrito(telefone: string, nome: string) {
+function whatsDoInscrito(telefone: string, nome: string, nomeParoquia: string) {
   const numero = telefone.length <= 11 ? `55${telefone}` : telefone;
-  return linkWhatsapp(numero, `Olá, ${nome.split(" ")[0]}! Aqui é da Paróquia Maria Serva do Senhor, sobre o seu contato pelo site.`);
+  return linkWhatsapp(numero, `Olá, ${nome.split(" ")[0]}! Aqui é da ${nomeParoquia}, sobre o seu contato pelo site.`);
 }
 
 async function Conteudo({ searchParams }: { searchParams: PageProps<"/admin/inscricoes">["searchParams"] }) {
   const { supabase } = await exigirAdmin();
   const sp = await searchParams;
+  const site = await getSite();
+
+  // Setores vêm do banco (inclui pastorais desativadas, que ainda podem ter inscrições).
+  const { data: pastoraisDb } = await supabase.from("pastorais").select("slug, nome").order("ordem").order("nome");
+  const NOMES_SETOR: Record<string, string> = {
+    ...Object.fromEntries((pastoraisDb ?? []).map((p: { slug: string; nome: string }) => [p.slug, p.nome])),
+    dizimo: "Dízimo",
+  };
+  const SETORES = Object.keys(NOMES_SETOR);
 
   // Só aceita filtros conhecidos (nada do usuário vai cru para a consulta).
-  const setor = SETORES_FORMULARIO.find((s) => s === sp.setor);
+  const setor = SETORES.find((s) => s === sp.setor);
   const status = (Object.keys(ROTULOS_STATUS) as Linha["status"][]).find((s) => s === sp.status);
 
   let consulta = supabase
@@ -60,7 +64,7 @@ async function Conteudo({ searchParams }: { searchParams: PageProps<"/admin/insc
           <label htmlFor="setor" className={estilo.rotulo}>Setor</label>
           <select id="setor" name="setor" defaultValue={setor ?? ""} className={estilo.campo}>
             <option value="">Todos</option>
-            {SETORES_FORMULARIO.map((s) => <option key={s} value={s}>{NOMES_SETOR[s]}</option>)}
+            {SETORES.map((s) => <option key={s} value={s}>{NOMES_SETOR[s]}</option>)}
           </select>
         </div>
         <div>
@@ -78,7 +82,7 @@ async function Conteudo({ searchParams }: { searchParams: PageProps<"/admin/insc
         {inscricoes.length === 0 ? <Vazio texto="Nenhuma inscrição encontrada." /> : (
           <ul className="divide-y divide-slate-100">
             {inscricoes.map((i) => {
-              const whats = whatsDoInscrito(i.telefone, i.nome);
+              const whats = whatsDoInscrito(i.telefone, i.nome, site.nome);
               return (
                 <li key={i.id} className="space-y-2 px-5 py-4">
                   <div className="flex flex-wrap items-start justify-between gap-3">
@@ -89,8 +93,8 @@ async function Conteudo({ searchParams }: { searchParams: PageProps<"/admin/insc
                         {i.status === "novo" && <span className="rounded-full bg-ouro-300/60 px-2 py-0.5 text-xs font-semibold text-mariano-950">Novo</span>}
                       </p>
                       <p className="mt-0.5 text-xs text-slate-500">
-                        {formatarData(i.created_at, { dateStyle: "short", timeStyle: "short" })} · {i.telefone}
-                        {i.email && <> · <a href={`mailto:${i.email}`} className="text-mariano-700 hover:underline">{i.email}</a></>}
+                        {formatarData(i.created_at, { dateStyle: "short", timeStyle: "short" })} <IconeDot /> {i.telefone}
+                        {i.email && <> <IconeDot /> <a href={`mailto:${i.email}`} className="text-mariano-700 hover:underline">{i.email}</a></>}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
-import { site } from "@/config/site";
+import { getSite } from "@/lib/data";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
@@ -10,18 +10,21 @@ const cormorant = Cormorant_Garamond({
   weight: ["500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: { default: site.nome, template: `%s | ${site.nome}` },
-  description: `${site.nome}: horários de missa, avisos, eventos, pastorais e dízimo.`,
-  openGraph: {
-    type: "website",
-    locale: "pt_BR",
-    siteName: site.nome,
-    images: ["/images/maria.png"],
-  },
-  icons: { icon: "/favicon.ico" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    metadataBase: new URL(site.url),
+    title: { default: site.nome, template: `%s | ${site.nome}` },
+    description: `${site.nome}: horários de missa, avisos, eventos, pastorais e dízimo.`,
+    openGraph: {
+      type: "website",
+      locale: "pt_BR",
+      siteName: site.nome,
+      images: ["/images/maria.png"],
+    },
+    icons: { icon: "/favicon.ico" },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#1e3a55",

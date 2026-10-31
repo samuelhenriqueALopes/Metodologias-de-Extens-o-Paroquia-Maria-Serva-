@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { CopiarTexto } from "@/components/CopiarTexto";
 import { FormularioInscricao } from "@/components/FormularioInscricao";
-import { IconeCoracao, IconeCruz, IconeEstrela, IconeMaos } from "@/components/Icones";
+import { IconeCoracao, IconeCruz, IconeDot, IconeEstrela, IconeMaos } from "@/components/Icones";
 import { TituloSecao } from "@/components/Ui";
-import { site } from "@/config/site";
+import { getSite } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Dízimo",
@@ -17,12 +17,13 @@ const destinos = [
   { Icone: IconeMaos, titulo: "Dimensão caritativa", texto: "Cuidado com os pobres, doentes e famílias em necessidade da nossa comunidade." },
 ];
 
-export default function DizimoPage() {
+export default async function DizimoPage() {
+  const site = await getSite();
   return (
     <>
       <section className="relative isolate overflow-hidden">
         <Image src="/images/altar.webp" alt="" fill priority sizes="100vw" className="-z-10 object-cover object-[50%_30%]" />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-roxo-900/90 to-roxo-900/75" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-linear-to-b from-roxo-900/90 to-roxo-900/75" />
         <div className="mx-auto max-w-3xl px-6 py-20 text-center text-white sm:py-28">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ouro-300">Dízimo</p>
           <h1 className="mt-3 font-serif text-5xl font-bold sm:text-6xl">Um gesto de fé e gratidão</h1>
@@ -76,7 +77,7 @@ export default function DizimoPage() {
 
           <div className="mt-8 rounded-2xl bg-mariano-900 p-6 text-white shadow-lg">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-ouro-300">
-              <IconeCoracao className="size-4" /> Doações pelo PIX · chave CNPJ
+              <IconeCoracao className="size-4" /> Doações pelo PIX <IconeDot /> chave CNPJ
             </p>
             <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
               <p className="font-mono text-xl font-semibold">{site.dizimo.chavePix}</p>

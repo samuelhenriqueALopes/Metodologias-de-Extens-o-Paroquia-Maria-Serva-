@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
-import { navegacao, site } from "@/config/site";
-import { pastorais } from "@/content/pastorais";
+import { getNavegacao, getPastorais, getSite } from "@/lib/data";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [site, navegacao, pastorais] = await Promise.all([getSite(), getNavegacao(), getPastorais()]);
   return [
     ...navegacao.map((n) => ({ url: `${site.url}${n.href === "/" ? "" : n.href}` })),
     ...pastorais.map((p) => ({ url: `${site.url}/pastorais/${p.slug}` })),

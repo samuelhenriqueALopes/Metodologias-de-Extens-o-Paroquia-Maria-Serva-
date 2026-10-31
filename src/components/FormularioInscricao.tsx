@@ -2,7 +2,6 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { enviarInscricao, type InscricaoState } from "@/app/actions/inscricao";
-import type { SetorFormulario } from "@/content/pastorais";
 import { IconeCheck } from "./Icones";
 
 const inicial: InscricaoState = { status: "idle" };
@@ -15,7 +14,7 @@ function Erro({ id, msgs }: { id: string; msgs?: string[] }) {
   return <p id={id} className="mt-1 text-xs text-red-600">{msgs[0]}</p>;
 }
 
-export function FormularioInscricao({ setor, titulo = "Quero participar" }: { setor: SetorFormulario; titulo?: string }) {
+export function FormularioInscricao({ setor, titulo = "Quero participar" }: { setor: string; titulo?: string }) {
   const [estado, acao, enviando] = useActionState(enviarInscricao, inicial);
   const montadoEm = useRef(0);
 
@@ -53,7 +52,7 @@ export function FormularioInscricao({ setor, titulo = "Quero participar" }: { se
 
       <input type="hidden" name="setor" value={setor} />
       {/* Honeypot: invisível para pessoas, atraente para robôs */}
-      <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+      <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
         <label>
           Website
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
@@ -101,7 +100,7 @@ export function FormularioInscricao({ setor, titulo = "Quero participar" }: { se
       </div>
 
       <button type="submit" disabled={enviando}
-        className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-mariano-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-mariano-800 disabled:opacity-60 sm:w-auto">
+        className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-mariano-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-mariano-800 disabled:opacity-60 sm:w-auto cursor-pointer">
         {enviando ? "Enviando…" : "Enviar"}
       </button>
     </form>

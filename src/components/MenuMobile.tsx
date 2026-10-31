@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { navegacao } from "@/config/site";
+import type { ItemMenu } from "@/lib/types";
 import { IconeFechar, IconeMenu } from "./Icones";
 import { NavLink } from "./NavLink";
 
-export function MenuMobile() {
+export function MenuMobile({ navegacao }: { navegacao: ItemMenu[] }) {
   const [aberto, setAberto] = useState(false);
 
   useEffect(() => {

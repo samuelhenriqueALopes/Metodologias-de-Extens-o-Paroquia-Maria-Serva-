@@ -3,8 +3,8 @@
 --   * Só quem está na tabela "administradores" pode editar conteúdo e ver
 --     inscrições. Ter uma conta no Auth NÃO basta.
 --   * O painel usa a sessão do próprio usuário (chave anon + JWT), então
---     o RLS é aplicado em cada operação — sem service_role no painel.
---   * Desative "Allow new users to sign up" em Authentication → Sign In / Providers.
+--     o RLS é aplicado em cada operação - sem service_role no painel.
+--   * Desative "Allow new users to sign up" em Authentication > Sign In / Providers.
 -- =====================================================================
 
 create table public.administradores (
@@ -65,7 +65,7 @@ create policy "admin exclui inscricoes" on public.inscricoes
 
 -- ---------------------------------------------------------------------
 -- Como cadastrar um administrador:
---   1. Authentication → Users → Add user (e-mail + senha forte, "Auto confirm").
+--   1. Authentication > Users > Add user (e-mail + senha forte, "Auto confirm").
 --   2. Rode:  insert into public.administradores (user_id, nome)
 --             select id, 'Secretaria' from auth.users where email = 'secretaria@exemplo.com';
 -- ---------------------------------------------------------------------

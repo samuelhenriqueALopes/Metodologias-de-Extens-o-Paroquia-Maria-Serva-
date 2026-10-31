@@ -8,7 +8,7 @@ export function CabecalhoPagina({ titulo, subtitulo, sobretitulo }: { titulo: st
       <div className="relative mx-auto max-w-7xl px-6 py-14 text-center sm:py-20">
         {sobretitulo && <p className="text-xs font-semibold uppercase tracking-[0.25em] text-mariano-950/70">{sobretitulo}</p>}
         <h1 className="mt-2 font-serif text-4xl font-bold text-white drop-shadow-sm sm:text-5xl">{titulo}</h1>
-        <div className="ornamento mx-auto mt-4 w-fit !text-white">
+        <div className="ornamento mx-auto mt-4 w-fit text-white!">
           <IconeEstrela className="size-3.5" />
         </div>
         {subtitulo && <p className="mx-auto mt-4 max-w-2xl text-mariano-950/80">{subtitulo}</p>}

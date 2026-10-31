@@ -1,26 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { FormularioInscricao } from "@/components/FormularioInscricao";
-import { IconeCalendario, IconeCheck, IconeExterno, IconeWhatsapp, iconesPastorais } from "@/components/Icones";
+import { IconeCalendario, IconeCheck, IconeExterno, IconeSetaEsquerda, IconeWhatsapp, iconesPastorais } from "@/components/Icones";
 import { LinkExterno } from "@/components/LinkExterno";
 import { CabecalhoPagina, botao } from "@/components/Ui";
-import { getPastoral, pastorais } from "@/content/pastorais";
+import { getPastoral, getPastorais } from "@/lib/data";
 import { linkWhatsapp, urlSegura } from "@/lib/format";
 
-export function generateStaticParams() {
-  return pastorais.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getPastorais()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/pastorais/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const p = getPastoral(slug);
+  const p = await getPastoral(slug);
   return p ? { title: p.nome, description: p.resumo } : {};
 }
 
-export default async function PastoralPage({ params }: PageProps<"/pastorais/[slug]">) {
+// O slug (dado da URL) é lido dentro de um <Suspense>: assim o "esqueleto" da página
+// é igual para todas as pastorais e a navegação continua instantânea.
+export default function PastoralPage({ params }: PageProps<"/pastorais/[slug]">) {
+  return (
+    <Suspense fallback={<div className="min-h-[60vh]" aria-hidden />}>
+      <DetalhePastoral params={params} />
+    </Suspense>
+  );
+}
+
+async function DetalhePastoral({ params }: Pick<PageProps<"/pastorais/[slug]">, "params">) {
   const { slug } = await params;
-  const p = getPastoral(slug);
+  const p = await getPastoral(slug);
   if (!p) notFound();
 
   const Icone = iconesPastorais[p.icone];
@@ -32,7 +43,7 @@ export default async function PastoralPage({ params }: PageProps<"/pastorais/[sl
       <CabecalhoPagina sobretitulo="Pastorais e Serviços" titulo={p.nome} subtitulo={p.resumo} />
 
       <div className="mx-auto max-w-7xl px-6 pt-6 text-sm">
-        <Link href="/pastorais" className="text-mariano-700 hover:text-mariano-900">← Todas as pastorais</Link>
+        <Link href="/pastorais" className="flex items-center gap-2 text-mariano-700 hover:text-mariano-900"><IconeSetaEsquerda className="size-4" /> Todas as pastorais</Link>
       </div>
 
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-10 lg:grid-cols-[1fr_28rem]">
@@ -72,7 +83,7 @@ export default async function PastoralPage({ params }: PageProps<"/pastorais/[sl
         </div>
 
         <aside className="lg:sticky lg:top-32 lg:self-start">
-          <FormularioInscricao setor={p.slug} titulo={`Inscrição · ${p.nome}`} />
+          <FormularioInscricao setor={p.slug} titulo={`Inscrição - ${p.nome}`} />
         </aside>
       </section>
     </>

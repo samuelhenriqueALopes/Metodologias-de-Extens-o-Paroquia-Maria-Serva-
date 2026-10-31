@@ -1,20 +1,21 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { endurecerCookie } from "@/lib/supabase/cookies";
+import { chavePublicavel, supabaseUrl } from "@/lib/supabase/env";
 
 // Renova a sessão do Supabase e manda para o login quem não está autenticado.
 // É só a primeira barreira: cada página/ação do painel verifica de novo.
 export async function proxy(request: NextRequest) {
-  const url = process.env.SUPABASE_URL;
-  const anonKey = process.env.SUPABASE_ANON_KEY;
+  const url = supabaseUrl();
+  const chave = chavePublicavel();
   const naLogin = request.nextUrl.pathname === "/admin/login";
 
   let response = NextResponse.next({ request });
-  if (!url || !anonKey) {
+  if (!url || !chave) {
     return naLogin ? response : NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
-  const supabase = createServerClient(url, anonKey, {
+  const supabase = createServerClient(url, chave, {
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll: (lista) => {

@@ -2,7 +2,13 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { MenuAdmin } from "@/components/admin/MenuAdmin";
 import { exigirAdmin } from "@/lib/auth";
+import { getSite } from "@/lib/data";
 import { sair } from "../login/actions";
+import { IconeSetaCimaDireita } from "@/components/Icones";
+
+async function NomeDaParoquia() {
+  return (await getSite()).nomeCurto;
+}
 
 async function UsuarioLogado() {
   const { admin } = await exigirAdmin();
@@ -10,7 +16,7 @@ async function UsuarioLogado() {
     <div className="space-y-2 text-xs text-mariano-200">
       <p className="truncate" title={admin.email}>{admin.email}</p>
       <form action={sair}>
-        <button type="submit" className="rounded-md border border-mariano-700 px-3 py-1.5 font-medium text-white hover:bg-white/10">
+        <button type="submit" className="rounded-md border border-mariano-700 px-3 py-1.5 font-medium text-white hover:bg-white/10 cursor-pointer">
           Sair
         </button>
       </form>
@@ -25,10 +31,12 @@ export default function PainelLayout({ children }: { children: React.ReactNode }
         <div className="flex items-center justify-between lg:block">
           <Link href="/admin" className="block">
             <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-ouro-400">Painel</span>
-            <span className="block font-serif text-lg font-bold leading-tight text-white">Maria Serva do Senhor</span>
+            <span className="block font-serif text-lg font-bold leading-tight text-white">
+              <Suspense fallback="Painel"><NomeDaParoquia /></Suspense>
+            </span>
           </Link>
           <Link href="/" target="_blank" rel="noopener noreferrer" className="text-xs text-mariano-200 hover:text-white lg:mt-2 lg:inline-block">
-            Ver site ↗
+            Ver site <IconeSetaCimaDireita className="inline-block size-4" />
           </Link>
         </div>
         <MenuAdmin />

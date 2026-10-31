@@ -17,7 +17,7 @@ export function CopiarTexto({ texto, rotulo = "Copiar" }: { texto: string; rotul
 
   return (
     <button type="button" onClick={copiar}
-      className="rounded-full bg-ouro-400 px-4 py-1.5 text-xs font-semibold text-mariano-950 transition hover:bg-ouro-300">
+      className="rounded-full bg-ouro-400 px-4 py-1.5 text-xs font-semibold text-mariano-950 transition hover:bg-ouro-300 cursor-pointer">
       <span aria-live="polite">{copiado ? "Copiado!" : rotulo}</span>
     </button>
   );

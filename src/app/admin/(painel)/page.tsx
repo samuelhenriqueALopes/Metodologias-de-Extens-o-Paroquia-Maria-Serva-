@@ -35,7 +35,7 @@ async function Conteudo() {
           <li key={c.rotulo}>
             <Link href={c.href} className={`${estilo.cartao} block p-5 transition hover:border-mariano-300 ${c.destaque ? "ring-2 ring-ouro-400" : ""}`}>
               <p className="text-sm text-slate-600">{c.rotulo}</p>
-              <p className="mt-1 text-3xl font-bold text-mariano-950">{c.valor ?? "—"}</p>
+              <p className="mt-1 text-3xl font-bold text-mariano-950">{c.valor ?? "-"}</p>
             </Link>
           </li>
         ))}

@@ -1,27 +1,14 @@
 // ============================================================
-// Pastorais e serviços — EDITE textos, WhatsApp e links aqui.
-// Para adicionar uma pastoral: inclua um item na lista e o slug
-// também em SETORES_FORMULARIO / no CHECK da tabela inscricoes.
+// VALORES PADRÃO (reserva).
+// As pastorais reais ficam no banco (Supabase > tabela `pastorais`) e podem
+// ser alteradas, criadas ou desativadas sem novo build. Estes valores só
+// aparecem se o Supabase não estiver configurado ou a migração 0003 ainda
+// não tiver sido executada.
 // ============================================================
 
-export type IconeNome = "aliancas" | "vela" | "calice" | "maos";
+import type { Pastoral } from "@/lib/types";
 
-export type Pastoral = {
-  slug: "casamento" | "coroinhas" | "ministros" | "acolhida";
-  nome: string;
-  resumo: string;
-  icone: IconeNome;
-  sobre: string[];
-  requisitos: string[];
-  encontros: string;
-  /** Somente dígitos, com DDI 55 + DDD. TODO: número do responsável. */
-  whatsapp: string;
-  mensagemWhatsapp: string;
-  /** Formulário externo opcional (Google Forms etc.). Deve começar com https:// */
-  formularioExterno?: string;
-};
-
-export const pastorais: Pastoral[] = [
+export const pastoraisPadrao: Pastoral[] = [
   {
     slug: "casamento",
     nome: "Casamento",
@@ -37,8 +24,8 @@ export const pastorais: Pastoral[] = [
       "Participação no curso de noivos",
       "Documentos de identidade e comprovante de residência",
     ],
-    encontros: "Cursos de noivos mensais — consulte as datas pelo WhatsApp.",
-    whatsapp: "5531999625767", // secretaria — troque pelo número do setor, se houver
+    encontros: "Cursos de noivos mensais - consulte as datas pelo WhatsApp.",
+    whatsapp: "5531999625767",
     mensagemWhatsapp: "Olá! Gostaria de informações sobre casamento na paróquia.",
   },
   {
@@ -57,7 +44,7 @@ export const pastorais: Pastoral[] = [
       "Disponibilidade para as formações",
     ],
     encontros: "Formação aos sábados pela manhã.",
-    whatsapp: "5531999625767", // secretaria — troque pelo número do setor, se houver
+    whatsapp: "5531999625767",
     mensagemWhatsapp: "Olá! Gostaria de informações para meu filho(a) ser coroinha.",
   },
   {
@@ -76,7 +63,7 @@ export const pastorais: Pastoral[] = [
       "Participar da formação arquidiocesana",
     ],
     encontros: "Reunião mensal e escala definida pela coordenação.",
-    whatsapp: "5531999625767", // secretaria — troque pelo número do setor, se houver
+    whatsapp: "5531999625767",
     mensagemWhatsapp: "Olá! Gostaria de saber mais sobre o ministério extraordinário da comunhão.",
   },
   {
@@ -94,14 +81,7 @@ export const pastorais: Pastoral[] = [
       "Participar das reuniões de formação",
     ],
     encontros: "Reunião bimestral; escala mensal.",
-    whatsapp: "5531999625767", // secretaria — troque pelo número do setor, se houver
+    whatsapp: "5531999625767",
     mensagemWhatsapp: "Olá! Gostaria de participar da Pastoral da Acolhida.",
   },
 ];
-
-export const SETORES_FORMULARIO = ["casamento", "coroinhas", "ministros", "acolhida", "dizimo"] as const;
-export type SetorFormulario = (typeof SETORES_FORMULARIO)[number];
-
-export function getPastoral(slug: string) {
-  return pastorais.find((p) => p.slug === slug);
-}

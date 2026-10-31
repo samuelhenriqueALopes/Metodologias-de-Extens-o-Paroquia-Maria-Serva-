@@ -3,24 +3,30 @@ import { createServerClient } from "@supabase/ssr";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { cache } from "react";
 import { endurecerCookie } from "@/lib/supabase/cookies";
+import { chavePublicavel, supabaseUrl } from "@/lib/supabase/env";
 
 // Camada de acesso do painel: TODA página e Server Action do /admin passa por
 // exigirAdmin(). O proxy só faz um redirecionamento otimista; quem garante o
 // acesso é esta verificação + o RLS do banco.
 
 export function supabaseConfigurado() {
-  return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY);
+  return Boolean(supabaseUrl() && chavePublicavel());
 }
 
 /** Cliente Supabase com a sessão do usuário (cookies). Sujeito ao RLS. */
 export async function getSupabaseSessao(): Promise<SupabaseClient | null> {
+  // Painel é sempre por requisição: connection() antes de qualquer valor instável
+  // (o cliente do Supabase usa Date.now() ao validar a sessão) evita o erro
+  // "blocking-prerender-current-time" do Cache Components.
+  await connection();
   // Lê os cookies antes de tudo: marca a rota como dinâmica (nunca pré-renderizada).
   const cookieStore = await cookies();
   if (!supabaseConfigurado()) return null;
 
-  return createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
+  return createServerClient(supabaseUrl()!, chavePublicavel()!, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (lista) => {

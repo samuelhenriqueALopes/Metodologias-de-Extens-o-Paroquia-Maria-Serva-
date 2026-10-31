@@ -1,4 +1,4 @@
--- Dados de exemplo — ajuste para a realidade da paróquia.
+-- Dados de exemplo - ajuste para a realidade da paróquia.
 insert into public.horarios_missa (dia_semana, hora, tipo) values
   (0, '07:30', 'Missa'),
   (0, '09:30', 'Missa'),

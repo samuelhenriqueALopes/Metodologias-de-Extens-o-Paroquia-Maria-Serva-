@@ -62,7 +62,7 @@ async function Conteudo({ searchParams }: { searchParams: PageProps<"/admin/even
                     </p>
                     <p className="mt-1 text-xs text-slate-500">
                       {formatarData(e.data_inicio, { dateStyle: "full", timeStyle: "short" })}
-                      {e.local && ` · ${e.local}`}
+                      {e.local && ` - ${e.local}`}
                     </p>
                   </div>
                   <div className="flex items-center gap-1">

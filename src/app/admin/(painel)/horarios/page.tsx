@@ -62,7 +62,7 @@ async function Conteudo({ searchParams }: { searchParams: PageProps<"/admin/hora
                     <td className="px-3 py-3">
                       {h.tipo}
                       {(h.local || h.observacao) && (
-                        <span className="block text-xs text-slate-500">{[h.local, h.observacao].filter(Boolean).join(" · ")}</span>
+                        <span className="block text-xs text-slate-500">{[h.local, h.observacao].filter(Boolean).join(" - ")}</span>
                       )}
                     </td>
                     <td className="px-3 py-3">

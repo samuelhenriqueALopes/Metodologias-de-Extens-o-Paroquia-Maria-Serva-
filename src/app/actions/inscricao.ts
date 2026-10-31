@@ -3,7 +3,7 @@
 import { createHash } from "node:crypto";
 import { headers } from "next/headers";
 import { z } from "zod";
-import { SETORES_FORMULARIO } from "@/content/pastorais";
+import { getSetoresFormulario } from "@/lib/data";
 import { getServiceClient } from "@/lib/supabase/server";
 
 export type InscricaoState = {
@@ -18,7 +18,7 @@ const JANELA_MINUTOS = 15;
 const TEMPO_MINIMO_MS = 3000;
 
 const schema = z.object({
-  setor: z.enum(SETORES_FORMULARIO),
+  setor: z.string().regex(/^[a-z0-9-]{2,40}$/, { error: "Setor inválido." }),
   nome: z
     .string()
     .trim()
@@ -80,13 +80,18 @@ export async function enviarInscricao(_prev: InscricaoState, formData: FormData)
     };
   }
 
+  // O setor precisa ser o dízimo ou uma pastoral ativa cadastrada no banco.
+  if (!(await getSetoresFormulario()).includes(parsed.data.setor)) {
+    return { status: "error", message: "Não foi possível enviar: setor inválido.", valores };
+  }
+
   const supabase = getServiceClient();
   const sal = process.env.IP_HASH_SALT;
   if (!supabase || !sal) {
     return { status: "error", message: "Formulário temporariamente indisponível. Fale conosco pelo WhatsApp.", valores };
   }
 
-  // 4. Limite de envios por IP — guardamos só o hash com sal (LGPD).
+  // 4. Limite de envios por IP - guardamos só o hash com sal (LGPD).
   const h = await headers();
   const ip = h.get("x-real-ip") ?? h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "desconhecido";
   const ipHash = createHash("sha256").update(`${sal}:${ip}`).digest("hex");

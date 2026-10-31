@@ -6,7 +6,7 @@ import { z } from "zod";
 import { exigirAdmin } from "@/lib/auth";
 import { deInputLocal } from "@/lib/format";
 
-// Todas as ações: (1) exigem admin de novo — nunca confiam na tela;
+// Todas as ações: (1) exigem admin de novo - nunca confiam na tela;
 // (2) validam no servidor; (3) gravam com a sessão do usuário, sujeitas ao RLS;
 // (4) atualizam o cache do site público na hora.
 

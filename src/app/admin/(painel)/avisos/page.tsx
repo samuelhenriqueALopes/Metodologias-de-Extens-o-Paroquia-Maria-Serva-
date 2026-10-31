@@ -67,7 +67,7 @@ async function Conteudo({ searchParams }: { searchParams: PageProps<"/admin/avis
                     <p className="mt-1 line-clamp-2 text-sm text-slate-600">{a.conteudo}</p>
                     <p className="mt-1 text-xs text-slate-500">
                       Publicação: {formatarData(a.data_publicacao, { dateStyle: "short", timeStyle: "short" })}
-                      {a.expira_em && ` · Expira: ${formatarData(a.expira_em, { dateStyle: "short", timeStyle: "short" })}`}
+                      {a.expira_em && ` - Expira: ${formatarData(a.expira_em, { dateStyle: "short", timeStyle: "short" })}`}
                     </p>
                   </div>
                   <div className="flex items-center gap-1">

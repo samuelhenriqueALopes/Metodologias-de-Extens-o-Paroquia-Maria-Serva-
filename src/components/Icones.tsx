@@ -41,8 +41,14 @@ export const IconeMegafone = (p: P) => (
 export const IconeCoracao = (p: P) => (
   <svg {...base} {...p}><path d="M12 20s-8-4.8-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6.2-8 11-8 11z" /></svg>
 );
-export const IconeSeta = (p: P) => (
+export const IconeSetaDireita = (p: P) => (
   <svg {...base} {...p}><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+);
+export const IconeSetaEsquerda = (p: P) => (
+  <svg {...base} {...p}><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
+);
+export const IconeSetaCimaDireita = (p: P) => (
+  <svg {...base} {...p}><path d="M7 17L17 7M8 7h9v9" /></svg>
 );
 export const IconeMenu = (p: P) => (
   <svg {...base} {...p}><path d="M4 7h16M4 12h16M4 17h16" /></svg>
@@ -52,6 +58,9 @@ export const IconeFechar = (p: P) => (
 );
 export const IconeCheck = (p: P) => (
   <svg {...base} {...p}><path d="m5 12 5 5L20 7" /></svg>
+);
+export const IconeDot = (p: P) => (
+  <svg {...base} {...p}><circle cx="12" cy="12" r="1" fill="currentColor" /></svg>
 );
 export const IconeExterno = (p: P) => (
   <svg {...base} {...p}><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg>

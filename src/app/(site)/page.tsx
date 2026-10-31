@@ -1,14 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CartaoEvento, GradeHorarios, ListaAvisos } from "@/components/Blocos";
-import { IconeEstrela, IconeSeta, iconesPastorais } from "@/components/Icones";
+import { IconeEstrela, IconeSetaDireita, iconesPastorais } from "@/components/Icones";
 import { TituloSecao, botao } from "@/components/Ui";
-import { site } from "@/config/site";
-import { pastorais } from "@/content/pastorais";
-import { getAvisos, getHorarios, getProximosEventos } from "@/lib/data";
+import { getAvisos, getHorarios, getPastorais, getProximosEventos, getSite } from "@/lib/data";
 
 export default async function Home() {
-  const [horarios, avisos, eventos] = await Promise.all([getHorarios(), getAvisos(3), getProximosEventos(3)]);
+  const [site, pastorais, horarios, avisos, eventos] = await Promise.all([
+    getSite(), getPastorais(), getHorarios(), getAvisos(3), getProximosEventos(3),
+  ]);
 
   return (
     <>
@@ -19,7 +19,7 @@ export default async function Home() {
           <div className="py-4 text-center md:py-24 md:text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-mariano-950/70">Bem-vindo à</p>
             <h1 className="mt-3 font-serif text-5xl font-bold leading-[1.05] text-white drop-shadow-sm sm:text-6xl">
-              Paróquia Maria <br className="hidden sm:block" />Serva do Senhor
+              {site.nome}
             </h1>
             <blockquote className="mx-auto mt-6 max-w-md border-l-2 border-white/60 pl-4 text-left text-lg italic text-mariano-950/85 md:mx-0">
               “{site.lema}”
@@ -30,14 +30,14 @@ export default async function Home() {
               <Link href="/dizimo" className={botao.claro}>Seja dizimista</Link>
             </div>
           </div>
-          <div className="relative mx-auto aspect-[878/579] w-full max-w-xl md:self-end">
+          <div className="relative mx-auto aspect-878/579 w-full max-w-xl md:self-end">
             <Image
               src="/images/maria.png"
               alt="Ilustração de Nossa Senhora em oração, coroada de doze estrelas"
               fill
               priority
               sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-contain object-bottom [mask-image:radial-gradient(ellipse_50%_60%_at_50%_45%,#000_65%,transparent_100%)]"
+              className="object-contain object-bottom mask-[radial-gradient(ellipse_50%_60%_at_50%_45%,#000_65%,transparent_100%)]"
             />
           </div>
         </div>
@@ -48,7 +48,7 @@ export default async function Home() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <TituloSecao sobretitulo="Celebrações" titulo="Horários de Missa" />
           <Link href="/missas" className="inline-flex items-center gap-1 text-sm font-semibold text-mariano-700 hover:text-mariano-900">
-            Ver todos os avisos <IconeSeta className="size-4" />
+            Ver todos os avisos <IconeSetaDireita className="size-4" />
           </Link>
         </div>
         <div className="mt-8">
@@ -71,7 +71,7 @@ export default async function Home() {
               {eventos.length ? eventos.map((e) => <CartaoEvento key={e.id} evento={e} />) : <p className="text-tinta/60">Nenhum evento agendado.</p>}
             </div>
             <Link href="/eventos" className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-mariano-700 hover:text-mariano-900">
-              Ver agenda completa <IconeSeta className="size-4" />
+              Ver agenda completa <IconeSetaDireita className="size-4" />
             </Link>
           </div>
         </div>
@@ -93,7 +93,7 @@ export default async function Home() {
                   <h3 className="mt-4 font-serif text-2xl font-bold text-mariano-950">{p.nome}</h3>
                   <p className="mt-2 flex-1 text-sm text-tinta/70">{p.resumo}</p>
                   <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-mariano-700 group-hover:text-mariano-900">
-                    Saiba mais <IconeSeta className="size-4 transition group-hover:translate-x-0.5" />
+                    Saiba mais <IconeSetaDireita className="size-4 transition group-hover:translate-x-0.5" />
                   </span>
                 </Link>
               </li>
@@ -105,7 +105,7 @@ export default async function Home() {
       {/* Dízimo */}
       <section className="relative isolate overflow-hidden">
         <Image src="/images/altar.webp" alt="" fill sizes="100vw" className="-z-10 object-cover object-[50%_35%]" />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-roxo-900/95 via-roxo-900/80 to-roxo-700/40" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-linear-to-r from-roxo-900/95 via-roxo-900/80 to-roxo-700/40" />
         <div className="mx-auto max-w-7xl px-6 py-20 sm:py-28">
           <div className="max-w-xl text-white">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-ouro-300">

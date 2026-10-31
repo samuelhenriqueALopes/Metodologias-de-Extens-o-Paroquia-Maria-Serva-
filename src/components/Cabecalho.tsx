@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-import { navegacao, site } from "@/config/site";
-import { linkWhatsapp } from "@/lib/format";
+import { getNavegacao, getSite } from "@/lib/data";
+import { linkWhatsapp, urlSegura } from "@/lib/format";
 import { IconeFacebook, IconeInstagram, IconeTelefone, IconeWhatsapp, IconeYoutube } from "./Icones";
 import { LinkExterno } from "./LinkExterno";
 import { MenuMobile } from "./MenuMobile";
 import { NavLink } from "./NavLink";
 
-export function Cabecalho() {
-  const whats = linkWhatsapp(site.whatsappSecretaria, "Olá! Vim pelo site da paróquia.");
+export async function Cabecalho() {
+  const [site, navegacao] = await Promise.all([getSite(), getNavegacao()]);
+  const whats = linkWhatsapp(site.whatsappSecretaria, site.mensagemWhatsapp);
+  const instagram = urlSegura(site.redes.instagram);
+  const facebook = urlSegura(site.redes.facebook);
+  const youtube = urlSegura(site.redes.youtube);
 
   return (
     <header className="sticky top-0 z-40">
@@ -25,15 +29,21 @@ export function Cabecalho() {
               </LinkExterno>
             )}
             <span className="h-3 w-px bg-mariano-700" />
-            <LinkExterno href={site.redes.instagram} aria-label="Instagram" className="hover:text-white">
-              <IconeInstagram className="size-4" />
-            </LinkExterno>
-            <LinkExterno href={site.redes.facebook} aria-label="Facebook" className="hover:text-white">
-              <IconeFacebook className="size-4" />
-            </LinkExterno>
-            <LinkExterno href={site.redes.youtube} aria-label="YouTube" className="hover:text-white">
-              <IconeYoutube className="size-4" />
-            </LinkExterno>
+            {instagram && (
+              <LinkExterno href={instagram} aria-label="Instagram" className="hover:text-white">
+                <IconeInstagram className="size-4" />
+              </LinkExterno>
+            )}
+            {facebook && (
+              <LinkExterno href={facebook} aria-label="Facebook" className="hover:text-white">
+                <IconeFacebook className="size-4" />
+              </LinkExterno>
+            )}
+            {youtube && (
+              <LinkExterno href={youtube} aria-label="YouTube" className="hover:text-white">
+                <IconeYoutube className="size-4" />
+              </LinkExterno>
+            )}
           </div>
         </div>
       </div>
@@ -42,13 +52,14 @@ export function Cabecalho() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-3">
             <span className="relative size-12 shrink-0 overflow-hidden rounded-full bg-mariano-400 ring-2 ring-ouro-400/70">
-              <Image src="/images/maria.png" alt="" fill sizes="48px" className="object-cover object-[50%_20%] scale-150" priority />
+              <Image src="/images/logo.png" alt="" fill sizes="48px" quality={90} className="object-cover" priority />
             </span>
             <span className="leading-tight">
               <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-mariano-600">Paróquia</span>
               <span className="block font-serif text-xl font-bold text-mariano-950 sm:text-2xl">{site.nomeCurto}</span>
             </span>
           </Link>
+
 
           <nav aria-label="Principal" className="hidden lg:block">
             <ul className="flex items-center gap-1">
@@ -60,7 +71,7 @@ export function Cabecalho() {
             </ul>
           </nav>
 
-          <MenuMobile />
+          <MenuMobile navegacao={navegacao} />
         </div>
       </div>
     </header>

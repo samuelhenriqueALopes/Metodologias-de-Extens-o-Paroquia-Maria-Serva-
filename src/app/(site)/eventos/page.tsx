@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { CartaoEvento } from "@/components/Blocos";
 import { CabecalhoPagina } from "@/components/Ui";
 import { formatarData } from "@/lib/format";
-import { getProximosEventos } from "@/lib/data";
+import { getProximosEventos, getSite } from "@/lib/data";
 import type { Evento } from "@/lib/types";
 
-export const metadata: Metadata = {
-  title: "Eventos",
-  description: "Agenda de eventos da Paróquia Maria Serva do Senhor.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return { title: "Eventos", description: `Agenda de eventos da ${site.nome}.` };
+}
 
 function agruparPorMes(eventos: Evento[]) {
   const grupos = new Map<string, Evento[]>();

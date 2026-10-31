@@ -1,4 +1,4 @@
-import type { Aviso, Evento, HorarioMissa } from "@/lib/types";
+import type { Aviso, Evento, HorarioMissa, MarcoHistoria } from "@/lib/types";
 
 // Exibidos apenas enquanto o Supabase não estiver configurado (.env.local).
 
@@ -49,4 +49,10 @@ export const exemploEventos: Evento[] = [
     local: "Igreja Matriz",
     link_inscricao: null,
   },
+];
+
+export const linhaDoTempoPadrao: MarcoHistoria[] = [
+  { ano: "Origens", texto: "A comunidade nasce da fé de famílias do bairro que se reuniam para rezar o terço e celebrar a missa." },
+  { ano: "Criação", texto: "A comunidade é elevada a paróquia pela Arquidiocese, sob o título de Maria, Serva do Senhor." },
+  { ano: "Hoje", texto: "Uma família de fé com pastorais, movimentos e serviços que anunciam o Evangelho e cuidam de quem mais precisa." },
 ];

@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { navegacao, site } from "@/config/site";
-import { pastorais } from "@/content/pastorais";
+import { getNavegacao, getPastorais, getSite } from "@/lib/data";
 import { linkWhatsapp } from "@/lib/format";
-import { IconeEmail, IconeEstrela, IconeLocal, IconeRelogio, IconeTelefone, IconeWhatsapp } from "./Icones";
+import { IconeDot, IconeEmail, IconeEstrela, IconeLocal, IconeRelogio, IconeTelefone, IconeWhatsapp } from "./Icones";
 import { LinkExterno } from "./LinkExterno";
 
-export function Rodape() {
-  const whats = linkWhatsapp(site.whatsappSecretaria, "Olá! Vim pelo site da paróquia.");
+export async function Rodape() {
+  const [site, navegacao, pastorais] = await Promise.all([getSite(), getNavegacao(), getPastorais()]);
+  const whats = linkWhatsapp(site.whatsappSecretaria, site.mensagemWhatsapp);
 
   return (
     <footer className="mt-auto bg-mariano-950 text-mariano-100">
@@ -49,7 +49,7 @@ export function Rodape() {
               <span>
                 {site.endereco.logradouro}, {site.endereco.bairro}
                 <br />
-                {site.endereco.cidade} · CEP {site.endereco.cep}
+                {site.endereco.cidade} <IconeDot className="inline-block size-4" /> CEP {site.endereco.cep}
               </span>
             </li>
             <li className="flex gap-2">
@@ -77,9 +77,11 @@ export function Rodape() {
       <div className="border-t border-mariano-900">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-5 text-xs text-mariano-300 sm:flex-row">
           <p>© {site.nome}. Todos os direitos reservados.</p>
-          <p className="flex items-center gap-1.5">
-            <IconeEstrela className="size-3 text-ouro-400" /> Ad Jesum per Mariam
-          </p>
+          {site.divisa && (
+            <p className="flex items-center gap-1.5">
+              <IconeEstrela className="size-3 text-ouro-400" /> {site.divisa}
+            </p>
+          )}
         </div>
       </div>
     </footer>

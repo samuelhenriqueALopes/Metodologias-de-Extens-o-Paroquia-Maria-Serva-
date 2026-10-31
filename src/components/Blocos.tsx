@@ -1,9 +1,9 @@
 import { DIAS_SEMANA, formatarData, formatarHora, partesData, urlSegura } from "@/lib/format";
 import type { Aviso, Evento, HorarioMissa } from "@/lib/types";
-import { IconeExterno, IconeLocal, IconeMegafone, IconeRelogio } from "./Icones";
+import { IconeDot, IconeExterno, IconeLocal, IconeMegafone, IconeRelogio } from "./Icones";
 import { LinkExterno } from "./LinkExterno";
 
-// Ordem de exibição: segunda → domingo
+// Ordem de exibição: segunda > domingo
 const ORDEM = [1, 2, 3, 4, 5, 6, 0];
 
 export function GradeHorarios({ horarios }: { horarios: HorarioMissa[] }) {
@@ -26,7 +26,7 @@ export function GradeHorarios({ horarios }: { horarios: HorarioMissa[] }) {
                 </span>
                 <span className="text-sm">
                   {h.tipo}
-                  {h.local && <span className="text-tinta/60"> · {h.local}</span>}
+                  {h.local && <span className="text-tinta/60"> <IconeDot /> {h.local}</span>}
                   {h.observacao && <span className="block text-xs text-tinta/60">{h.observacao}</span>}
                 </span>
               </li>
