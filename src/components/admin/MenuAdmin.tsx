@@ -9,6 +9,7 @@ const itens = [
   { href: "/admin/horarios", label: "Horários de missa" },
   { href: "/admin/eventos", label: "Eventos" },
   { href: "/admin/inscricoes", label: "Inscrições" },
+  { href: "/admin/configuracao", label: "Configurações do site" },
 ];
 
 export function MenuAdmin() {

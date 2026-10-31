@@ -161,6 +161,59 @@ export async function excluirEvento(fd: FormData) {
   redirect("/admin/eventos?ok=excluido");
 }
 
+
+// ---------------------------------------------------------------- Configurações do site
+
+const urlOpcional = z.string().trim().max(500).refine(
+  (v) => v === "" || /^https:\/\/[^\s]+$/i.test(v),
+  { error: "Informe uma URL válida começando com https://" },
+).transform((v) => (v === "" ? null : v));
+
+const schemaConfiguracoes = z.object({
+  nome: z.string().trim().min(1).max(120),
+  nome_curto: z.string().trim().min(1).max(80),
+  lema: z.string().trim().max(300),
+  lema_referencia: z.string().trim().max(60),
+  divisa: textoOpcional(120),
+  arquidiocese: z.string().trim().min(1).max(120),
+  logradouro: z.string().trim().min(1).max(160),
+  bairro: z.string().trim().min(1).max(120),
+  cidade: z.string().trim().min(1).max(120),
+  cep: z.string().trim().min(1).max(20),
+  maps_url: urlOpcional,
+  telefone: z.string().trim().min(1).max(30),
+  email: z.string().trim().email("Informe um e-mail válido.").max(160),
+  whatsapp_secretaria: z.string().trim().regex(/^[0-9]{10,13}$/, "Use apenas números, incluindo 55 + DDD."),
+  mensagem_whatsapp: z.string().trim().min(1).max(300),
+  secretaria_horario: z.string().trim().min(1).max(200),
+  instagram_url: urlOpcional,
+  facebook_url: urlOpcional,
+  youtube_url: urlOpcional,
+  dizimo_chave_pix: z.string().trim().min(1).max(120),
+  dizimo_favorecido: z.string().trim().min(1).max(160),
+});
+
+export async function salvarConfiguracoes(fd: FormData): Promise<void> {
+  const { supabase } = await exigirAdmin();
+  const campos = [
+    "nome", "nome_curto", "lema", "lema_referencia", "divisa", "arquidiocese",
+    "logradouro", "bairro", "cidade", "cep", "maps_url", "telefone", "email",
+    "whatsapp_secretaria", "mensagem_whatsapp", "secretaria_horario", "instagram_url",
+    "facebook_url", "youtube_url", "dizimo_chave_pix", "dizimo_favorecido",
+  ];
+  const parsed = schemaConfiguracoes.safeParse(ler(fd, ...campos));
+  if (!parsed.success) redirect("/admin/configuracao?erro=validacao");
+
+  const { error } = await supabase.from("configuracoes_site").upsert({ id: 1, ...parsed.data }, { onConflict: "id" });
+  if (error) {
+    console.error("Painel: erro ao salvar configurações do site:", error.message);
+    redirect("/admin/configuracao?erro=salvar");
+  }
+
+  updateTag("site");
+  redirect("/admin/configuracao?ok=salvo");
+}
+
 // ---------------------------------------------------------------- Inscrições
 
 const STATUS = ["novo", "em_contato", "concluido"] as const;
