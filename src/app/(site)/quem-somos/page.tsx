@@ -40,7 +40,7 @@ export default async function QuemSomosPage() {
           </div>
         </div>
         <div className="relative aspect-4/5 overflow-hidden rounded-3xl shadow-xl ring-1 ring-mariano-100">
-          <Image src="/images/altar.webp" alt="Altar da igreja com o crucifixo e tecidos roxos do tempo da Quaresma" fill
+          <Image src="/images/altar.png" alt="Altar da igreja com o crucifixo e tecidos roxos do tempo da Quaresma" fill
             sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
         </div>
       </section>

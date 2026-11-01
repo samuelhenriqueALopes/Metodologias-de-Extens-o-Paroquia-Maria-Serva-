@@ -32,7 +32,7 @@ export default async function Home() {
           </div>
           <div className="relative mx-auto aspect-878/579 w-full max-w-xl md:self-end">
             <Image
-              src="/images/maria.png"
+              src="/images/VirgemMaria.png"
               alt="Ilustração de Nossa Senhora em oração, coroada de doze estrelas"
               fill
               priority
@@ -104,7 +104,7 @@ export default async function Home() {
 
       {/* Dízimo */}
       <section className="relative isolate overflow-hidden">
-        <Image src="/images/altar.webp" alt="" fill sizes="100vw" className="-z-10 object-cover object-[50%_35%]" />
+        <Image src="/images/altar.png" alt="" fill sizes="100vw" className="-z-10 object-cover object-[50%_35%]" />
         <div aria-hidden className="absolute inset-0 -z-10 bg-linear-to-r from-roxo-900/95 via-roxo-900/80 to-roxo-700/40" />
         <div className="mx-auto max-w-7xl px-6 py-20 sm:py-28">
           <div className="max-w-xl text-white">

@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: "pt_BR",
       siteName: site.nome,
-      images: ["/images/maria.png"],
+      images: ["/images/VirgemMaria.png"],
     },
     icons: { icon: "/favicon.ico" },
   };

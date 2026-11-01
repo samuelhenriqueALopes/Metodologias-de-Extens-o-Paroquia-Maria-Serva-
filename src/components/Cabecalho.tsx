@@ -52,7 +52,7 @@ export async function Cabecalho() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-3">
             <span className="relative size-12 shrink-0 overflow-hidden rounded-full bg-mariano-400 ring-2 ring-ouro-400/70">
-              <Image src="/images/logo.png" alt="" fill sizes="48px" quality={75} className="object-cover" priority />
+              <Image src="/images/logo_paroquia.png" alt="" fill sizes="48px" quality={75} className="object-cover" priority />
             </span>
             <span className="leading-tight">
               <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-mariano-600">Paróquia</span>

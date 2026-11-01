@@ -22,7 +22,7 @@ export default async function DizimoPage() {
   return (
     <>
       <section className="relative isolate overflow-hidden">
-        <Image src="/images/altar.webp" alt="" fill priority sizes="100vw" className="-z-10 object-cover object-[50%_30%]" />
+        <Image src="/images/altar.png" alt="" fill priority sizes="100vw" className="-z-10 object-cover object-[50%_30%]" />
         <div aria-hidden className="absolute inset-0 -z-10 bg-linear-to-b from-roxo-900/90 to-roxo-900/75" />
         <div className="mx-auto max-w-3xl px-6 py-20 text-center text-white sm:py-28">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ouro-300">Dízimo</p>

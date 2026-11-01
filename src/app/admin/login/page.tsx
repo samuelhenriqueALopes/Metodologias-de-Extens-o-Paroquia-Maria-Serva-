@@ -26,7 +26,7 @@ export default async function LoginPage(props: PageProps<"/admin/login">) {
       <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-xl">
         <div className="flex flex-col items-center text-center">
           <span className="relative size-16 overflow-hidden rounded-full bg-mariano-400 ring-2 ring-ouro-400/70">
-            <Image src="/images/logo.png" alt="" fill sizes="64px" quality={75} className="object-cover" />
+            <Image src="/images/logo_paroquia.png" alt="" fill sizes="64px" quality={75} className="object-cover" />
           </span>
           <h1 className="mt-4 font-serif text-2xl font-bold text-mariano-950">Painel da Secretaria</h1>
           <p className="text-sm text-tinta/60">{site.nome}</p>
