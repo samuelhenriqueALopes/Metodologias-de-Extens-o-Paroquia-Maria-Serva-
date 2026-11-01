@@ -24,12 +24,12 @@ export const sitePadrao: Site = {
   arquidiocese: "Arquidiocese de Belo Horizonte",
 
   endereco: {
-    logradouro: "Rua Exemplo, 123",
-    bairro: "Bairro",
+    logradouro: "R. dos Médicos, 1008",
+    bairro: "Alípio de Melo",
     cidade: "Belo Horizonte - MG",
-    cep: "00000-000",
+    cep: "30840-020",
   },
-  mapsUrl: "https://www.google.com/maps",
+  mapsUrl: "Https://maps.app.goo.gl/Q5Zzd8mamujYA4Yu6?g_st=ic",
 
   telefone: "(31) 99962-5767",
   email: "contato@paroquiamariaserva.org.br",
